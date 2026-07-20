@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+/* =====================================================
+   DARK THEME VARIABLES — Now default for the entire site
+===================================================== */
+:root {
+  --bg:          #060E20;
+  --bg-alt:      #0A1428;
+  --surface:     #0D1A30;
+  --surface-alt: rgba(255,255,255,0.04);
+  --border:      rgba(255,255,255,0.08);
+  --txt:         #E8EFFF;
+  --txt-muted:   #94A3B8;
+  --txt-subtle:  #475569;
+  --card-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+/* =====================================================
+   TAILWIND v4 THEME
+===================================================== */
+@theme {
+  --color-brand:        #0B1F5A;
+  --color-brand-light:  #1A3080;
+  --color-brand-dark:   #07153D;
+  --color-primary:      #FF6B35;
+  --color-primary-light:#FF885B;
+  --color-primary-dark: #E04A15;
+  --color-accent:       #16A34A;
+  --color-accent-light: #22C55E;
+  --color-accent-dark:  #15803D;
+  --font-poppins: 'Poppins', sans-serif;
+}
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+html { font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg);
+  color: var(--txt);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =====================================================
+   GLASSMORPHISM
+===================================================== */
+.glass {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.13);
+}
+.glass-card {
+  background: var(--surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+}
+.glass-dark {
+  background: rgba(11,31,90,0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.glass-navbar {
+  background: rgba(7,21,61,0.94);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* =====================================================
+   SECTION BACKGROUNDS
+===================================================== */
+.section-bg       { background-color: var(--bg); }
+.section-bg-alt   { background-color: var(--bg-alt); }
+.card-surface     { background-color: var(--surface); border-color: var(--border); }
+
+/* =====================================================
+   PATTERNS
+===================================================== */
+.grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+.grid-bg-dark {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+.dot-bg {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1.5px, transparent 1.5px);
+  background-size: 26px 26px;
+}
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-alt); }
+::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+@keyframes floatA {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-18px) rotate(2.5deg); }
+}
+@keyframes floatB {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-12px) rotate(-2.5deg); }
+}
+@keyframes floatC {
+  0%,100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-9px) scale(1.04); }
+}
+@keyframes spin-slow    { to { transform: rotate(360deg);  } }
+@keyframes counter-spin { to { transform: rotate(-360deg); } }
+@keyframes pulse-ring {
+  0%   { transform: scale(1);    opacity:.7; }
+  70%  { transform: scale(1.35); opacity:0;  }
+  100% { transform: scale(1.35); opacity:0;  }
+}
+@keyframes progress-fill {
+  0%   { width: 15%; }
+  50%  { width: 72%; }
+  100% { width: 15%; }
+}
+
+.animate-float-a      { animation: floatA 7s ease-in-out infinite; }
+.animate-float-b      { animation: floatB 5.5s ease-in-out infinite; }
+.animate-float-c      { animation: floatC 6s ease-in-out infinite; }
+.animate-spin-slow    { animation: spin-slow 18s linear infinite; }
+.animate-counter-spin { animation: counter-spin 12s linear infinite; }
+.animate-pulse-ring   { animation: pulse-ring 2s cubic-bezier(.215,.61,.355,1) infinite; }
+
+/* =====================================================
+   CAROUSEL
+===================================================== */
+.scroll-snap-x     { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+.scroll-snap-x > * { scroll-snap-align: start; }
+.no-scrollbar                    { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* =====================================================
+   PHONE MOCKUP GLOW
+==================================================== */
+.phone-glow {
+  filter: drop-shadow(0 0 40px rgba(11,31,90,0.6)) drop-shadow(0 0 80px rgba(255,107,53,0.15));
+}
