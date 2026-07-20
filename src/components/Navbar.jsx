@@ -103,6 +103,20 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  /* Close mobile menu then scroll to section */
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    const id = href.slice(1);
+    setOpen(false);
+    // Small delay lets the drawer close animation start before scrolling
+    setTimeout(() => {
+      const target = document.getElementById(id);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 80);
+  };
+
   return (
     <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
       scrolled ? 'glass-navbar py-3 shadow-2xl shadow-black/25' : 'bg-brand py-4'
@@ -123,6 +137,7 @@ export const Navbar = () => {
               <a
                 key={id}
                 href={l.href}
+                onClick={(e) => handleNavClick(e, l.href)}
                 className={`px-4 py-2 rounded-full text-[11px] font-semibold tracking-wide transition-all duration-200 ${
                   isActive
                     ? 'bg-white text-brand font-bold'
@@ -177,7 +192,7 @@ export const Navbar = () => {
                   <a
                     key={id}
                     href={l.href}
-                    onClick={() => setOpen(false)}
+                    onClick={(e) => handleNavClick(e, l.href)}
                     className={`px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
                       isActive
                         ? 'bg-white text-brand'
@@ -190,7 +205,7 @@ export const Navbar = () => {
               })}
               <a
                 href="#download"
-                onClick={() => setOpen(false)}
+                onClick={(e) => handleNavClick(e, '#download')}
                 className="mt-3 flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white py-3.5 rounded-xl text-sm font-bold tracking-wide shadow-lg transition-all"
               >
                 Download App <ArrowRight className="w-4 h-4" />

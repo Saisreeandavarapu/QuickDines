@@ -3,32 +3,47 @@ import { motion } from 'framer-motion';
 import { Icon } from './Icon';
 import { companyData } from '../data';
 
-/* ── Mobile auto-scroll hook ── */
+/* ── Mobile auto-scroll hook — pauses on page scroll ── */
 const useAutoScroll = (ref, speed = 0.45) => {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     let frame;
     let dir = 1;
+    let paused = false;
+    let scrollTimer;
+
     const step = () => {
-      el.scrollLeft += speed * dir;
-      if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 2) dir = -1;
-      if (el.scrollLeft <= 0) dir = 1;
+      if (!paused && el) {
+        el.scrollLeft += speed * dir;
+        if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 2) dir = -1;
+        if (el.scrollLeft <= 0) dir = 1;
+      }
       frame = requestAnimationFrame(step);
     };
     frame = requestAnimationFrame(step);
-    const pause = () => cancelAnimationFrame(frame);
-    const resume = () => { frame = requestAnimationFrame(step); };
+
+    const onWindowScroll = () => {
+      paused = true;
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => { paused = false; }, 400);
+    };
+
+    const pause = () => { paused = true; };
+    const resume = () => { paused = false; };
     el.addEventListener('mouseenter', pause);
     el.addEventListener('mouseleave', resume);
     el.addEventListener('touchstart', pause, { passive: true });
     el.addEventListener('touchend', resume);
+    window.addEventListener('scroll', onWindowScroll, { passive: true });
     return () => {
       cancelAnimationFrame(frame);
+      clearTimeout(scrollTimer);
       el.removeEventListener('mouseenter', pause);
       el.removeEventListener('mouseleave', resume);
       el.removeEventListener('touchstart', pause);
       el.removeEventListener('touchend', resume);
+      window.removeEventListener('scroll', onWindowScroll);
     };
   }, [ref, speed]);
 };

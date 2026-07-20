@@ -228,11 +228,10 @@ export const Benefits = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 shrink-0 select-none ${
-                    activeTab === tab.id
-                      ? 'text-white'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
-                  }`}
+                  className={`relative flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 shrink-0 select-none ${activeTab === tab.id
+                    ? 'text-white'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
+                    }`}
                 >
                   {activeTab === tab.id && (
                     <motion.div

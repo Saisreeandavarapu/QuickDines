@@ -3,35 +3,49 @@ import { motion } from 'framer-motion';
 import { Icon } from './Icon';
 import { companyData } from '../data';
 
-/* ── Auto-scrolling carousel for sm screens ── */
+/* ── Auto-scrolling carousel for sm screens — pauses on page scroll ── */
 const useAutoScroll = (ref, speed = 0.6) => {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     let frame;
     let direction = 1;
+    let paused = false;
+    let scrollTimer;
+
     const step = () => {
-      if (!el) return;
-      el.scrollLeft += speed * direction;
-      // reverse at ends
-      if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 2) direction = -1;
-      if (el.scrollLeft <= 0) direction = 1;
+      if (!paused && el) {
+        el.scrollLeft += speed * direction;
+        if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 2) direction = -1;
+        if (el.scrollLeft <= 0) direction = 1;
+      }
       frame = requestAnimationFrame(step);
     };
     frame = requestAnimationFrame(step);
-    // Pause on hover/touch
-    const pause = () => cancelAnimationFrame(frame);
-    const resume = () => { frame = requestAnimationFrame(step); };
+
+    // Pause while user scrolls the page vertically
+    const onWindowScroll = () => {
+      paused = true;
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => { paused = false; }, 400);
+    };
+
+    // Pause on element hover/touch
+    const pause = () => { paused = true; };
+    const resume = () => { paused = false; };
     el.addEventListener('mouseenter', pause);
     el.addEventListener('mouseleave', resume);
     el.addEventListener('touchstart', pause, { passive: true });
     el.addEventListener('touchend', resume);
+    window.addEventListener('scroll', onWindowScroll, { passive: true });
     return () => {
       cancelAnimationFrame(frame);
+      clearTimeout(scrollTimer);
       el.removeEventListener('mouseenter', pause);
       el.removeEventListener('mouseleave', resume);
       el.removeEventListener('touchstart', pause);
       el.removeEventListener('touchend', resume);
+      window.removeEventListener('scroll', onWindowScroll);
     };
   }, [ref, speed]);
 };
